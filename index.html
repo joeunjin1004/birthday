@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상연아 생일 축하해! 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1b1633 0%, #0a0718 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Black Han Sans', 'Noto Sans KR', sans-serif;
+      color: #fff;
+      position: relative;
+    }
+
+    /* 배경 별빛 효과 */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 160px 120px, #ffd700, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 230px 190px, #ff69b4, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 250px 250px;
+      opacity: 0.6;
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.8; }
+    }
+
+    /* 플로팅 풍선/이모지 */
+    .floating-decorations {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      font-size: clamp(2rem, 5vw, 4.5rem);
+      animation: floatUp 8s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* 메인 텍스트 컨테이너 (클릭 가능한 큰 버튼) */
+    .message-container {
+      text-align: center;
+      z-index: 10;
+      padding: 20px 30px;
+      border-radius: 35px;
+      cursor: pointer;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.25s ease;
+      animation: popIn 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .message-container:hover {
+      transform: scale(1.04);
+      filter: brightness(1.15);
+    }
+
+    .message-container:active {
+      transform: scale(0.97);
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) translateY(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    /* 첫 번째 줄: 상연아~ */
+    .name-line {
+      font-size: clamp(3.5rem, 12vw, 11rem);
+      line-height: 1.15;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #FFE17D 0%, #FF9EAA 50%, #FF6B8B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 25px rgba(255, 158, 170, 0.65));
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
+      display: inline-block;
+    }
+
+    /* 두 번째 줄: 생일 축하한다! */
+    .wish-line {
+      font-size: clamp(4rem, 14vw, 13rem);
+      line-height: 1.15;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 40%, #FA709A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 35px rgba(79, 172, 254, 0.7));
+      margin-top: 1.5vh;
+      animation: floatMotion 3s ease-in-out infinite;
+      display: block;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        filter: drop-shadow(0 0 20px rgba(255, 158, 170, 0.5));
+        transform: scale(1);
+      }
+      100% {
+        filter: drop-shadow(0 0 45px rgba(255, 215, 0, 0.9));
+        transform: scale(1.03);
+      }
+    }
+
+    @keyframes floatMotion {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+    .sub-icons {
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      margin-top: 2vh;
+      letter-spacing: 12px;
+      animation: bounce 1.8s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* 선물 열어보기 유도 버튼 */
+    .card-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 25px;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #FF6B8B, #FFE17D);
+      color: #1a102f;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+      border-radius: 50px;
+      border: 3px solid #fff;
+      box-shadow: 0 0 30px rgba(255, 225, 125, 0.85), 0 8px 25px rgba(0,0,0,0.3);
+      animation: pulseBtn 1.8s infinite ease-in-out;
+      cursor: pointer;
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 225, 125, 0.6); }
+      50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(255, 107, 139, 0.95); }
+    }
+
+    /* 전체화면 버튼 */
+    .fullscreen-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s;
+      z-index: 30;
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+
+    .fullscreen-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.05);
+    }
+
+    /* 화면 전체를 꽉 채우는 풀스크린 스폰지밥 모달 */
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      overflow: hidden;
+    }
+
+    .image-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* 배경 블러 처리로 화면에 여백 없이 100% 꽉 참 */
+    .modal-backdrop-blur {
+      position: absolute;
+      inset: -20px;
+      background: url('spongebob_birthday.jpg') center/cover no-repeat;
+      filter: blur(35px) brightness(0.45);
+      transform: scale(1.1);
+      z-index: 1;
+    }
+
+    /* 화면 전체를 가득 채우는 스폰지밥 메인 이미지 */
+    .modal-image {
+      position: relative;
+      z-index: 2;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain; /* 왜곡 없이 화면 최대 크기로 가득 참 */
+      filter: drop-shadow(0 0 35px rgba(255, 215, 0, 0.6));
+      animation: zoomInBounce 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes zoomInBounce {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* 상단 플로팅 닫기 버튼 */
+    .modal-close-btn {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      z-index: 10;
+      width: 54px;
+      height: 54px;
+      background: rgba(255, 71, 87, 0.9);
+      color: #fff;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .modal-close-btn:hover {
+      transform: scale(1.15) rotate(90deg);
+      background: #ff4757;
+    }
+
+    /* 웃음소리 표시 라벨 */
+    .laugh-indicator {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1.5px solid rgba(255, 225, 125, 0.6);
+      padding: 10px 24px;
+      border-radius: 30px;
+      backdrop-filter: blur(8px);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 1.1rem;
+      color: #FFE17D;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulseBadge 1.5s infinite alternate;
+      pointer-events: none;
+    }
+
+    /* 숨겨진 유튜브 플레이어 */
+    #yt-player-wrap {
+      position: fixed;
+      top: -9999px;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="floating-decorations" id="decorations"></div>
+
+  <!-- 숨겨진 유튜브 플레이어 (생일 노래) -->
+  <div id="yt-player-wrap">
+    <div id="player"></div>
+  </div>
+
+  <!-- 스폰지밥 웃음소리 오디오 (무한 반복) -->
+  <audio id="laughAudio" src="spongebob_laugh.mp3" loop preload="auto"></audio>
+
+  <button class="fullscreen-btn" id="fsBtn" onclick="toggleFullScreen(event)">전체화면</button>
+
+  <!-- 메인 글자 / 버튼 영역 -->
+  <main class="message-container" id="mainTrigger">
+    <div class="name-line">상연아~</div>
+    <div class="wish-line">생일 축하한다!</div>
+    <div class="sub-icons">🎂 🎁 🥳 🎈 💖</div>
+    <div>
+      <div class="card-trigger-btn">
+        <span>🎁 눌러서 생일 파티 열기!</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- 화면 전체를 꽉 채우는 풀스크린 스폰지밥 이미지 + 웃음소리 -->
+  <div class="image-modal" id="imageModal" onclick="closeModal(event)">
+    <div class="modal-backdrop-blur"></div>
+    <button class="modal-close-btn" onclick="closeModal(event)" title="닫기">✕</button>
+    <img src="spongebob_birthday.jpg" alt="상연아 생일축하한다" class="modal-image" id="modalImg">
+    <div class="laugh-indicator">
+      <span>🤣 스폰지밥의 웃음소리가 계속 울려퍼지는 중! 아하하하하하! 🎂</span>
+    </div>
+  </div>
+
+  <script>
+    // 풍선 및 이모티콘 자동 생성
+    const icons = ['🎈', '✨', '🎉', '🎁', '🎂', '🥳', '⭐', '🎊', '🍰'];
+    const decoContainer = document.getElementById('decorations');
+
+    function createBalloon() {
+      const el = document.createElement('div');
+      el.className = 'balloon';
+      el.innerText = icons[Math.floor(Math.random() * icons.length)];
+      el.style.left = Math.random() * 95 + 'vw';
+      el.style.animationDuration = (5 + Math.random() * 5) + 's';
+      el.style.animationDelay = (Math.random() * 2) + 's';
+      decoContainer.appendChild(el);
+
+      setTimeout(() => {
+        el.remove();
+      }, 11000);
+    }
+
+    setInterval(createBalloon, 700);
+    for (let i = 0; i < 8; i++) {
+      createBalloon();
+    }
+
+    // 폭죽 효과
+    function launchConfetti(x, y, count = 80) {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: count,
+          spread: 90,
+          origin: {
+            x: x !== undefined ? x / window.innerWidth : 0.5,
+            y: y !== undefined ? y / window.innerHeight : 0.55
+          },
+          colors: ['#FFE17D', '#FF6B8B', '#4FACFE', '#00F2FE', '#FA709A', '#ffffff', '#ffd700']
+        });
+      }
+    }
+
+    // 폭죽 축제 연출 (이미지 뜰 때)
+    function blastPartyConfetti() {
+      if (typeof confetti !== 'function') return;
+      
+      confetti({
+        particleCount: 120,
+        spread: 120,
+        origin: { x: 0.5, y: 0.5 }
+      });
+
+      confetti({
+        particleCount: 70,
+        angle: 60,
+        spread: 70,
+        origin: { x: 0.1, y: 0.7 }
+      });
+
+      confetti({
+        particleCount: 70,
+        angle: 120,
+        spread: 70,
+        origin: { x: 0.9, y: 0.7 }
+      });
+    }
+
+    // 유튜브 플레이어 API 연동 - 배경 음악
+    let ytPlayer = null;
+
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player('player', {
+        height: '200',
+        width: '200',
+        videoId: 'F-MT40b0De4',
+        playerVars: {
+          'autoplay': 1,
+          'controls': 0,
+          'loop': 1,
+          'playlist': 'F-MT40b0De4',
+          'playsinline': 1
+        },
+        events: {
+          'onReady': (event) => {
+            event.target.playVideo();
+          },
+          'onStateChange': (event) => {
+            if (event.data === YT.PlayerState.ENDED) {
+              ytPlayer.playVideo();
+            }
+          }
+        }
+      });
+    }
+
+    function ensureMusicPlays() {
+      if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
+        const state = ytPlayer.getPlayerState();
+        if (state !== YT.PlayerState.PLAYING) {
+          ytPlayer.playVideo();
+        }
+      }
+    }
+
+    // 스폰지밥 웃음소리 오디오 요소
+    const laughAudio = document.getElementById('laughAudio');
+
+    function startLaughSound() {
+      laughAudio.currentTime = 0;
+      laughAudio.volume = 1.0;
+      laughAudio.play().catch(e => {
+        console.log('Audio play error:', e);
+      });
+    }
+
+    function stopLaughSound() {
+      laughAudio.pause();
+    }
+
+    // 모달 열기 및 닫기
+    const modal = document.getElementById('imageModal');
+    const mainTrigger = document.getElementById('mainTrigger');
+
+    function openModal() {
+      ensureMusicPlays();
+      modal.classList.add('show');
+      
+      // 스폰지밥 웃음소리 계속 재생 시작!
+      startLaughSound();
+
+      // 화려한 축하 폭죽 연속 폭격
+      blastPartyConfetti();
+      setTimeout(blastPartyConfetti, 400);
+      setTimeout(blastPartyConfetti, 800);
+    }
+
+    function closeModal(e) {
+      if (e) e.stopPropagation();
+      modal.classList.remove('show');
+      stopLaughSound();
+    }
+
+    // 메인 글자 / 버튼 클릭 시 화면 꽉 찬 스폰지밥 열기 + 웃음소리 재생
+    mainTrigger.addEventListener('click', (e) => {
+      openModal();
+    });
+
+    // 배경 클릭 시에도 음악 재생 보장 및 폭죽
+    window.addEventListener('click', (e) => {
+      ensureMusicPlays();
+      if (e.target.id === 'fsBtn' || e.target.closest('#mainTrigger') || e.target.closest('#imageModal')) return;
+      launchConfetti(e.clientX, e.clientY, 60);
+    });
+
+    window.addEventListener('keydown', (e) => {
+      ensureMusicPlays();
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+    window.addEventListener('touchstart', ensureMusicPlays);
+
+    // 시작 시 자동 연속 폭죽쇼
+    function startCelebration() {
+      const duration = 4.0 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 4,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#FFE17D', '#FF6B8B', '#FA709A']
+          });
+          confetti({
+            particleCount: 4,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#00F2FE', '#4FACFE', '#ffd700']
+          });
+        }
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    window.onload = () => {
+      startCelebration();
+      setInterval(() => {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 25,
+            spread: 60,
+            origin: { x: Math.random(), y: Math.random() * 0.4 + 0.2 }
+          });
+        }
+      }, 4000);
+    };
+
+    // 전체화면 토글
+    function toggleFullScreen(e) {
+      e.stopPropagation();
+      const fsBtn = document.getElementById('fsBtn');
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.log(err.message);
+        });
+        fsBtn.innerText = '화면 복귀';
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+        fsBtn.innerText = '전체화면';
+      }
+    }
+  </script>
+</body>
+</html>
