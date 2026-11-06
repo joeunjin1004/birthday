@@ -321,6 +321,57 @@
       pointer-events: none;
     }
 
+    .mobile-br {
+      display: none;
+    }
+
+    /* 모바일 반응형 스타일: 상연아~ / 생일 / 축하한다! 3줄 분리 */
+    @media (max-width: 768px) {
+      .mobile-br {
+        display: block;
+      }
+      .name-line {
+        font-size: clamp(3rem, 14vw, 5.5rem);
+        margin-bottom: 0.5vh;
+      }
+      .wish-line {
+        font-size: clamp(3.3rem, 16vw, 6.5rem);
+        line-height: 1.25;
+        margin-top: 0.5vh;
+      }
+      .sub-icons {
+        font-size: clamp(1.8rem, 7.5vw, 3rem);
+        letter-spacing: 8px;
+        margin-top: 2vh;
+      }
+      .card-trigger-btn {
+        margin-top: 20px;
+        padding: 12px 24px;
+        font-size: clamp(1rem, 3.8vw, 1.25rem);
+      }
+      .fullscreen-btn {
+        top: 15px;
+        right: 15px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+      }
+      .laugh-indicator {
+        font-size: 0.88rem;
+        padding: 8px 16px;
+        bottom: 18px;
+        width: 90%;
+        justify-content: center;
+        text-align: center;
+      }
+      .modal-close-btn {
+        top: 18px;
+        right: 18px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+      }
+    }
+
     /* 숨겨진 유튜브 플레이어 */
     #yt-player-wrap {
       position: fixed;
@@ -350,7 +401,7 @@
   <!-- 메인 글자 / 버튼 영역 -->
   <main class="message-container" id="mainTrigger">
     <div class="name-line">상연아~</div>
-    <div class="wish-line">생일 축하한다!</div>
+    <div class="wish-line"><span class="wish-word">생일</span><br class="mobile-br"><span class="wish-word">축하한다!</span></div>
     <div class="sub-icons">🎂 🎁 🥳 🎈 💖</div>
     <div>
       <div class="card-trigger-btn">
